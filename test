@@ -1,0 +1,116 @@
+sys 模块则是python程序用来请求解释器行为的接口。
+
+#from import 从车里把矿泉水拿出来，给我 
+#import  把车给我
+
+import 三种格式
+        import Module # 引入模块
+        from Module import Other # 引入模块中的类、函数或者变量
+        from Module import * # 引入模块中的所有‘公开’成员
+
+退出
+        exit（0）：正常运行程序并退出程序；
+        exit（1）：非正常运行导致退出程序；
+        return（）：返回函数，若在主函数中，则会退出函数并返回一值。
+
+def 函数名(参数1, 参数2, ……, 参数N):
+    执行语句
+        
+        def 函数名为调用的表示名，参数则是传入的参数，可以更具需要定义，也可以没有。
+                
+                #例1：简单的函数使用
+                #coding=gb2312 #转换编码
+                # 定义函数
+                def hello():
+                    print 'hello python!'
+                    
+                # 调用函数        
+                hello()
+                >>> hello python!
+        
+        
+        def 函数可以带参数和返回值，参数将按从左到右的匹配，参数可设置默认值，当使用函数时没给相应的参数时，会按照默认值进行赋值。
+        
+                #例2：累加计算值
+                # coding=gb2312
+                # 定义函数
+                    def myadd(a=1,b=100):
+                        result = 0
+                        i = a
+                        while i <= b:	# 默认值为1+2+3+……+100
+                            result += i	
+                            i += 1
+                        return result
+                    
+                    # 打印1+2+……+10        
+                    print myadd(1,10)
+                    print myadd()       # 使用默认参数1，100
+                    print myadd(50)     # a赋值50，b使用默认值
+                        
+                    >>> 55
+                    >>> 5050
+                    >>> 3825
+        
+        
+        def Python 函数的参数传递时，值得注意的是参数传入时若为变量会被当作临时赋值给参数变量，如果是对象则会被引用。
+                # 例3：
+                # coding=gb2312
+                
+                def testpara(p1,p2):
+                    p1 = 10
+                    p2.append('hello')
+                
+                l = []      # 定义一数组对像
+                a = 20      # 给变量a赋值
+                testpara(a,l)  # 变量a与对象数组l作为参数传入
+                print a     # 打印运行参数后的值
+                for v in l: # 打印数组对象的成员
+                    print v
+                        
+                >>> 20		# 调用函数后a变量并未被复值
+                >>> hello   # 而对象l数组则增加成员hello     
+        
+1.类和实例     #https://www.liaoxuefeng.com/wiki/1016959663602400/1017496031185408#0
+
+1.1
+    class Student(object):  #class后面紧接着是类名，即Student，类名通常是大写开头的单词，紧接着是(object)
+    >>> bart = Student()    #定义好了Student类，就可以根据Student类创建出Student的实例
+    >>> bart                #创建实例是通过类名+()实现的： bart = Student()
+    <__main__.Student object at 0x10a67a590> 
+    >>> Student             #可以看到，变量bart指向的就是一个Student的实例，后面的0x10a67a590是内存地址，每个object的地址都不一样，而Student本身则是一个类。
+    <class '__main__.Student'>
+
+
+1.2
+    >>> bart.name = 'Bart Simpson'  #可以自由地给一个实例变量绑定属性，比如，给实例bart绑定一个name属性：
+    >>> bart.name
+    'Bart Simpson'
+
+1.3
+    由于类可以起到模板的作用，因此，可以在创建实例的时候，把一些我们认为必须绑定的属性强制填写进去。
+    通过定义一个特殊的__init__方法，在创建实例的时候，就把name，score等属性绑上去：
+    class Student(object):
+
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+    
+    注意到__init__方法的第一个参数永远是self，表示创建的实例本身
+    因此，在__init__方法内部，就可以把各种属性绑定到self，因为self就指向创建的实例本身。
+    有了__init__方法，在创建实例的时候，就不能传入空的参数了，必须传入与__init__方法匹配的参数
+    但self不需要传，Python解释器自己会把实例变量传进去：
+
+
+
+        
+
+
+
+
+
+
+
+
+
+       
+        
