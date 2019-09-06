@@ -30,14 +30,14 @@ class KeyboardActionListener(threading.Thread):
             def on_press(key):
                 template = keyboard_action_template()
                 template['event'] = 'press'
-                try:
+                try: 
                     template['vk'] = key.vk
                 except AttributeError:
                     template['vk'] = key.value.vk
                 finally:
                     file.writelines(json.dumps(template) + "\n")
                     file.flush()
-
+                    
             # 键盘抬起监听
             def on_release(key):
                 if key == keyboard.Key.esc:

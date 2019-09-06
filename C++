@@ -1,0 +1,142 @@
+// MMyKey.cpp : 定义控制台应用程序的入口点。
+//
+
+jiuwensjdfjfjdj
+
+#include "stdafx.h"
+using namespace std;
+
+
+//#define MAPVK_VK_TO_VSC 0
+BYTE scan_code(DWORD pKey)
+{
+    const DWORD result = MapVirtualKey(pKey, MAPVK_VK_TO_VSC);
+    return static_cast<BYTE>(result);
+}
+void press_key(DWORD pKey)
+{
+    keybd_event(static_cast<BYTE>(pKey), scan_code(pKey), 0, 0);
+}
+void release_key(DWORD pKey)
+{
+    keybd_event(static_cast<BYTE>(pKey), scan_code(pKey), KEYEVENTF_KEYUP, 0);
+}
+bool isInvalid = true;
+// for testing
+//#define PRESS(x) press_key(x); std::cout << "Press: " #x << std::endl
+//#define RELEASE(x) release_key(x); std::cout << "Release: " #x << std::end
+#define PRESS(x) press_key(x);
+#define RELEASE(x) release_key(x);
+// test
+
+
+//HHOOK g_ms_hook = 0;
+HHOOK g_kb_hook = 0;
+
+
+
+
+LRESULT CALLBACK kb_proc (int code, WPARAM w, LPARAM l)
+{
+    //printf((w==WM_KEYDOWN)?"按下%c\n":"抬起%c\n",((PKBDLLHOOKSTRUCT)l)->vkCode);
+
+//F1结束'p'真的是F1
+
+if (((PKBDLLHOOKSTRUCT)l)->vkCode == 'p') {
+isInvalid = true;
+cout << "不喝" << endl;
+}
+
+//F2开始‘q'真的是F2
+
+else if(((PKBDLLHOOKSTRUCT)l)->vkCode == 'q') {
+isInvalid = false;
+cout << "喝" << endl;
+}
+    return CallNextHookEx (g_kb_hook, code, w, l);
+}
+/*LRESULT CALLBACK ms_proc (int code, WPARAM w, LPARAM l)
+{
+    if(w == WM_LBUTTONDOWN)
+        printf("按下左键\n");
+    else if(w == WM_LBUTTONUP)
+        printf("抬起左键\n");
+    else
+        printf("x:%d\ty:%d\n",((PMSLLHOOKSTRUCT)l)->pt.x,((PMSLLHOOKSTRUCT)l)->pt.y);
+    return CallNextHookEx (g_ms_hook, code, w, l);
+}*/
+DWORD WINAPI mySwitch(PVOID pvParam) {
+MSG msg;
+while (GetMessage (&msg, NULL, 0, 0)) {
+TranslateMessage (&msg);
+        DispatchMessage (&msg);
+Sleep(10);  
+}
+/*while(1) {
+cout << "myswitch" << endl;
+Sleep(50); 
+}*/
+return 0;
+}
+DWORD WINAPI anjian(PVOID pvParam) {
+while (1)
+    {
+    if(!isInvalid) {
+        PRESS('7');
+        Sleep(10); // hold it for 1/100'th of a second
+        RELEASE('7');
+        Sleep(10); // wait for a second
+        PRESS('8');
+        Sleep(10); // hold it for 1/100'th of a second
+        RELEASE('8');
+Sleep(10); // wait for a second
+        PRESS('9');
+        Sleep(10); // hold it for 1/100'th of a second
+        RELEASE('9');
+        Sleep(50); // wait for a second
+    }
+Sleep(10);
+    }
+}
+int _tmain(int argc, _TCHAR* argv[])
+{
+
+
+g_kb_hook = SetWindowsHookEx (WH_KEYBOARD_LL,kb_proc,GetModuleHandle (NULL),0);
+    //g_ms_hook = SetWindowsHookEx (WH_MOUSE_LL, ms_proc,GetModuleHandle(NULL),0);
+if (g_kb_hook == NULL)
+    {
+        printf("安装钩子出错\n");
+        return 0;
+    }
+else {
+cout << "/*************************客官你要喝豆浆吗？*********************/" << endl;
+cout << "/********************************F2喝****************************/" << endl;
+cout << "/*******************************F1不喝****************************/" << endl;
+}
+    /*HANDLE hThread1 = CreateThread(NULL,       //默认安全级别  
+                            0,          //默认栈大小  
+                            mySwitch,//线程函数   
+                            NULL,       //函数没有参数  
+                            0,          //创建后直接运行  
+                            NULL);      //线程标识，不需要  
+*/
+HANDLE hThread2 = CreateThread(NULL,       //默认安全级别  
+                            0,          //默认栈大小  
+                            anjian,//线程函数   
+                            NULL,       //函数没有参数  
+                            0,          //创建后直接运行  
+                            NULL);      //线程标识，不需要  
+MSG msg;
+while (GetMessage (&msg, NULL, 0, 0)) {
+TranslateMessage (&msg);
+        DispatchMessage (&msg);
+Sleep(10);  
+}
+
+
+UnhookWindowsHookEx (g_kb_hook);
+//CloseHandle(hThread1);
+CloseHandle(hThread2);
+return 0;
+}

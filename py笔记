@@ -3,7 +3,7 @@ sys 模块则是python程序用来请求解释器行为的接口。
 
 #from import 从车里把矿泉水拿出来，给我 
 #import  把车给我
-
+import 
 import 三种格式
         import Module # 引入模块
         from Module import Other # 引入模块中的类、函数或者变量
@@ -103,7 +103,6 @@ def 函数名(参数1, 参数2, ……, 参数N):
 
 
 
-        
 
 
 
@@ -113,5 +112,6 @@ def 函数名(参数1, 参数2, ……, 参数N):
 
 
 
-       
-        
+
+
+
